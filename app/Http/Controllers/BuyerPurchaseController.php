@@ -10,9 +10,6 @@ class BuyerPurchaseController extends Controller
 {
     public function SecondBuyerElq(){
 
-
-        // $buyer = Buyer::with('diaries','erasers','pens')->Sum('amount')->get() ;
-
         $buyers = Buyer::with('diaries','erasers','pens')->get() ;
 
         $blist =  array();
@@ -39,9 +36,6 @@ class BuyerPurchaseController extends Controller
     }
 
     public function SecondBuyerNoElq(){
-
-
-
         $second_buyer = DB::select(DB::Raw("select buyers.id,buyers.name, ifnull(d.amount,0) as d_taken,ifnull(e.amount,0) as e_taken,ifnull(p.amount,0) as p_taken,(ifnull(d.amount,0)+ifnull(e.amount,0)+ifnull(p.amount,0)) as total_taken
         from buyers
         left join (select diary_taken.buyer_id, SUM(diary_taken.amount) as amount from diary_taken group by diary_taken.buyer_id) as d on buyers.id=d.buyer_id
@@ -52,13 +46,37 @@ class BuyerPurchaseController extends Controller
 
         $second_buyer = (array)$second_buyer[0];
 
-
         return view('Buyer.index',compact('second_buyer'));
     }
 
+
     public function PurchaseListElq(){
 
-        return view('Purchase.index');
+        $buyers = Buyer::with('diaries','erasers','pens')->get() ;
+
+        $blist =  array();
+        foreach($buyers as $buyer){
+            $amount = $buyer->diaries->sum('amount')+ $buyer->erasers->sum('amount')+ $buyer->pens->sum('amount');
+            array_push($blist,['name'=> $buyer->name,
+            'id'=> $buyer->id,
+            'd_taken' => $buyer->diaries->sum('amount'),
+            'p_taken' => $buyer->pens->sum('amount'),
+            'e_taken'=> $buyer->erasers->sum('amount'),
+            'total_taken' => $amount]);
+        }
+        // array_multisort($blist, SORT_ASC, $blist);
+        $result = array();
+        function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
+            $sort_col = array();
+            foreach ($arr as $key=> $row) {
+                $sort_col[$key] = $row[$col];
+            }
+
+            array_multisort($sort_col, $dir, $arr);
+        }
+        array_sort_by_column($blist,'total_taken');
+
+        return view('Purchase.index',compact('blist'));
     }
     public function PurchaseListNoElq(){
 

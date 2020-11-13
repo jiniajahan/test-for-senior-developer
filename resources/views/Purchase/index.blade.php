@@ -26,15 +26,20 @@
                     </thead>
                     <tbody>
                     <tr>
-                        @if(isset($data))
-                            <th scope="row">{{$data["Buyer id"]}}</th>
-                            <td>{{$data["Buyer Name"]}}</td>
-                            <td>{{$data["Total Diary Taken"]}}</td>
-                            <td>{{$data["Total Pen Taken"]}}</td>
-                            <td>{{$data["Total Eraser Taken"]}}</td>
-                            <td>{{$data["Total items Taken"]}}</td>
+                        @if(isset($blist))
 
-                        @elseif($purchase_list)
+                        <tr>
+                            @foreach ($blist as $item)
+                            <th scope="row">{{$item["id"]}}</th>
+                            <td>{{$item["name"]}}</td>
+                            <td>{{$item["d_taken"]}}</td>
+                            <td>{{$item["p_taken"]}}</td>
+                            <td>{{$item["e_taken"]}}</td>
+                            <td>{{$item["total_taken"]}}</td>
+                         </tr>
+                            @endforeach
+
+                        @elseif(isset($purchase_list))
                     <tr>
                            @foreach ($purchase_list as $item)
                            <th scope="row">{{$item["id"]}}</th>
