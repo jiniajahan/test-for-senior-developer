@@ -46,19 +46,6 @@
                 <p>Sum of numbers in array: <span id="reduce"></span></p>
 
             </div>
-
-            <div class="col-md-12 content">
-                <p>
-                    In JavaScript, functions are objects. We can pass objects to functions as parameters.
-                    also we can also pass functions as parameters to other functions and call them inside the outer functions
-                </p>
-                <p>
-
-                    function print(callback) {
-                        callback();
-                    }
-                </p>
-            </div>
         </div>
     </div>
 

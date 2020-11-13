@@ -37,5 +37,19 @@ Route::get('/reduce-js', 'ExampleController@getReduce')->name('reduce.get');
 Route::get('/define-callback-js', 'ExampleController@getCallback')->name('callback.get');
 
 
+Route::get('/record-transfer', function(){
+	$json = file_get_contents(storage_path('app\public\records.json'));
+    $objs = json_decode($json,true);
 
+	foreach ($objs as $obj)  {
 
+		foreach ($obj as $key => $value) {
+			$insertArr[str_slug($key,'_')] = $value;
+        }
+        for($i=0; $i<count($insertArr);$i++){
+
+            Record::insert($insertArr[$i]);
+        }
+	}
+	dd("Finished adding data in records table");
+});

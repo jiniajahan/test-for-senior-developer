@@ -33,6 +33,6 @@ class ExampleController extends Controller
 
     public function getCallback(){
 
-        return view('Example.index');
+        return view('Example.callback');
     }
 }
