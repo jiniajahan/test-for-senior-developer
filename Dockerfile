@@ -2,7 +2,6 @@
 # This stage is to support development.
 FROM python:alpine AS base
 WORKDIR /app
-COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Create the zip download file
